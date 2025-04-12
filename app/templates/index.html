@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./static/style.css">
+  <title>Packet Aquarium</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right,#639dd6,#084a8d);
+      color: white;
+      font-family: sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #f2f2f2; /* 全体のベース色（薄いグレー） */
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    thead {
+      background-color:rgb(40, 78, 204); /* 濃いグレー */
+      color: white;
+    }
+
+    tbody tr {
+      background-color:rgb(73, 117, 197); /* すべて薄いグレー */
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Packet Aquarium</h1>
+    <button id="captureBtn">Start Capture</button>
+    <div id="loadingMessage" style="display: none; margin-top: 10px;">しばらくお待ちください...</div>
+    <pre id="output"></pre>
+    <div id="packetBar" style="margin-top: 10px;"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Summary</th><th>Source</th><th>Dest</th><th>Protocol</th><th>Length</th>
+        </tr>
+      </thead>
+      <tbody id="packet-table-body"></tbody>
+    </table>
+
+    <script>
+      document.getElementById("captureBtn").addEventListener("click", async () => {
+        const loadingMessage = document.getElementById("loadingMessage");
+        const output = document.getElementById("output");
+        const tbody = document.getElementById("packet-table-body");
+    
+        // UI初期化
+        loadingMessage.style.display = "block";
+        output.textContent = "";
+        tbody.innerHTML = "";
+    
+        // データ取得と表示
+        fetch('/capture')
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              output.textContent = "エラーが発生しました: " + data.error;
+              return;
+            }
+    
+            data.forEach(pkt => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${pkt.summary}</td>
+                <td>${pkt.src}</td>
+                <td>${pkt.dst}</td>
+                <td>${pkt.protocol}</td>
+                <td>${pkt.length}</td>
+              `;
+              tbody.appendChild(row);
+            });
+          })
+          .catch(err => {
+            console.error(err);
+            output.textContent = "エラーが発生しました";
+          })
+          .finally(() => {
+            loadingMessage.style.display = "none";
+          });
+      });
+    </script>    
+ </div>
+</body>
+</html>
