@@ -1,12 +1,10 @@
-# ��� Packet Aquarium
+# Packet Aquarium
 
 **Packet Aquarium** は、ローカルネットワーク内のパケットをキャプチャして、まるで水槽の中に泳ぐ魚のように可視化するプロジェクトです。安全なローカル環境内でネットワークの生態系を観察できるツールとして設計されています。
 
-![screenshot](./docs/screenshot.png)
-
 ---
 
-## ��� Features
+## Features
 
 - リアルタイムでパケットキャプチャ
 - 簡単なWeb UIでの可視化
@@ -16,7 +14,7 @@
 
 ---
 
-## ��� Requirements
+## Requirements
 
 - Docker
 - Docker Compose
@@ -24,7 +22,7 @@
 
 ---
 
-## ���️ インストール & 起動方法
+## インストール & 起動方法
 
 1. リポジトリをクローン
 
